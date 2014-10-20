@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "MassObject"
+#include "MassObject.h"
 
 int main()
 {
