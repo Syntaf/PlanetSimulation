@@ -24,20 +24,29 @@ option (USE_TGUI
 
 #include sources, headers and runtime dependencies
 set(HEADERS
-
+	src/common/shader.hpp
+	src/common/texture.hpp
+	src/common/controls.hpp
+	src/app.hpp
 )
 
 set(SOURCES
-
+	src/main.cpp
+	src/app.cpp
+	src/common/shader.cpp
+	src/common/texture.cpp
+	src/common/controls.cpp
 )
 
 set(RUNTIME_DEPENDENCIES
-
+	shaders/vertexshader.vert
+	shaders/fragmentshader.frag
+	textures/Planet.DDS
 )
 
 if(USE_TGUI)
-	file(COPY ${PROJECT_SOUCE_DIR}/TGUI DESTINATION ${PROJECT_BINARY_DIR}/Release)
-endiff()
+	file(COPY ${PROJECT_SOURCE_DIR}/TGUI DESTINATION ${PROJECT_BINARY_DIR}/Release)
+endif()
 
 #include_directories("${PROJECT_BINARY_DIR}")
 #include_directories("${PROJECT_SOURCE_DIR}/shaders")
