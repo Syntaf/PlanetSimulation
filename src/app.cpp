@@ -1,15 +1,18 @@
 #include <iostream>
 #include <cstdlib>
 #include <vector>
+#include <GL/glew.h>
+#include <SFML/Graphics.hpp>
+#include <SFML/OpenGL.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/norm.hpp>
 #include "common/shader.hpp"
 #include "common/texture.hpp"
+#include "app.hpp"
 
-bool App::running=true;
-
-App::App(sf::VideoMode mode)
+App::App(sf::VideoMode mode):
+	running(true)
 {
   d_main_window.create(mode,
     "Planet Simulator",
@@ -45,10 +48,10 @@ void App::run()
         sf::Event event;
         while(d_main_window.pollEvent(event))
         {
-          if(event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboad::Escape))
+          if(event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
             running = false;
           else if(event.type == sf::Event::Resized)
-            glViewPort(0,0,event.size.width,event.size.height);
+            glViewport(0,0,event.size.width,event.size.height);
         }
 
         d_main_window.display();

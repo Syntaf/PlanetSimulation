@@ -1,4 +1,4 @@
-#include "MassObject.h"
+#include "MassObject.hpp"
 
 const float G = 6.67400E-11;
 

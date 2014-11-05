@@ -9,14 +9,10 @@
 #include <sstream>
 #include <GL/glew.h>
 #include "shader.hpp"
-#include "../guiconsole/console.hpp"
 
 using namespace std;
 
-GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path, 
-                   ConsoleManager *out){
-
-    bool error_happened = false;
+GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
 
     // Create the shaders
     GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
@@ -24,10 +20,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
     const unsigned char* version = (const unsigned char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
     std::stringstream ss;
-    ss << "running GLSL Version " << version;
-    out->printToConsole(ss.str());
-    ss.clear();
-    ss.str(std::string());
+    std::cout << "running GLSL Version " << version << std::endl;
 
     // Read the Vertex Shader code from the file
     std::string VertexShaderCode;
@@ -38,10 +31,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
             VertexShaderCode += "\n" + Line;
         VertexShaderStream.close();
     }else{
-        ss << "Impossible to open " << vertex_file_path << ". Are you in the right directory?";
-        out->printToConsole(ss.str());
-        ss.clear();
-        ss.str(std::string());
+        std::cout << "Impossible to open " << vertex_file_path << ". Are you in the right directory?" << std::endl;
         return 0;
     }
 
@@ -59,10 +49,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
     int InfoLogLength;
 
     // Compile Vertex Shader
-    ss << "Compiling shader : " << vertex_file_path;
-    out->printToConsole(ss.str());
-    ss.clear();
-    ss.str(std::string());
+    std::cout << "Compiling shader : " << vertex_file_path << std::endl;
     char const * VertexSourcePointer = VertexShaderCode.c_str();
     glShaderSource(VertexShaderID, 1, &VertexSourcePointer , NULL);
     glCompileShader(VertexShaderID);
@@ -73,23 +60,13 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
     if ( InfoLogLength > 0 ){
         std::vector<char> VertexShaderErrorMessage(InfoLogLength+1);
         glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
-        ss << &VertexShaderErrorMessage[0];
-        if(ss.rdbuf()->in_avail() > 0) {
-            error_happened = true;
-            out->printToConsole(ss.str());
-            ss.clear();
-            ss.str(std::string());
-    
-        }
-    }
+        std::cout << &VertexShaderErrorMessage[0] << std::endl;
+	}
 
 
 
     // Compile Fragment Shader
-    ss << "Compiling shader : " << fragment_file_path;
-    out->printToConsole(ss.str());
-    ss.clear();
-    ss.str(std::string());
+    std::cout << "Compiling shader : " << fragment_file_path << std::endl;
     char const * FragmentSourcePointer = FragmentShaderCode.c_str();
     glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer , NULL);
     glCompileShader(FragmentShaderID);
@@ -100,13 +77,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
     if ( InfoLogLength > 0 ){
         std::vector<char> FragmentShaderErrorMessage(InfoLogLength+1);
         glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
-        ss << &FragmentShaderErrorMessage[0];
-        if(ss.rdbuf()->in_avail() > 0) {
-            error_happened = true;
-            out->printToConsole(ss.str());
-            ss.clear();
-            ss.str(std::string());
-        }
+        std::cout << &FragmentShaderErrorMessage[0] << std::endl;
     }
 
 
@@ -124,18 +95,8 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
     if ( InfoLogLength > 0 ){
         std::vector<char> ProgramErrorMessage(InfoLogLength+1);
         glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-        ss << &ProgramErrorMessage[0];
-        if(ss.rdbuf()->in_avail() > 0) {
-            out->printToConsole(ss.str());
-            ss.clear();
-            ss.str(std::string());
-        }
+        std::cout << &ProgramErrorMessage[0] << std::endl;
     }
-    //move text to top of console
-    if(error_happened)
-        out->printToConsole("%%%%");
-    else
-        out->printToConsole("%%%%%%%%");
     glDeleteShader(VertexShaderID);
     glDeleteShader(FragmentShaderID);
 

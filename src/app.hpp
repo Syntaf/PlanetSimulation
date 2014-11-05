@@ -13,6 +13,9 @@ class App{
     void run();
 
   private:
+	sf::Clock clock;
     sf::Window d_main_window;
-    const bool running;
-}
+    bool running;
+};
+
+#endif
