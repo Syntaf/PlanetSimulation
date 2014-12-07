@@ -28,13 +28,12 @@ set(HEADERS
 	src/common/texture.hpp
 	src/common/controls.hpp
 	src/app.hpp
-	src/MassObject.hpp
+	src/planet.hpp
 )
 
 set(SOURCES
 	src/main.cpp
 	src/app.cpp
-	src/MassObject.cpp
 	src/common/shader.cpp
 	src/common/texture.cpp
 	src/common/controls.cpp
