@@ -29,11 +29,13 @@ set(HEADERS
 	src/common/controls.hpp
 	src/app.hpp
 	src/planet.hpp
+	src/planetmanager.hpp
 )
 
 set(SOURCES
 	src/main.cpp
 	src/app.cpp
+	src/planetmanager.cpp
 	src/common/shader.cpp
 	src/common/texture.cpp
 	src/common/controls.cpp
