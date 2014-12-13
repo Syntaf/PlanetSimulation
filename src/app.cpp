@@ -39,6 +39,31 @@ App::~App()
   //nothing atm
 }
 
+bool App::initGL(const int& planet_count)
+{
+	glewExperimental = true;
+	if(glewInit() != GLEW_OK) {
+		std::cout << "Failed to initialize GLEW\n";
+		return false;
+	}
+
+	d_planet_manager = new PlanetManager(&d_main_window, planet_count);
+
+	d_planet_manager->genGLBuffers();
+	glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
+
+	d_program_id = LoadShaders("shaders/vertexshader.vert",
+		"shaders/fragmentshader.frag");
+
+	d_cameraright_worldspace_id = glGetUniformLocation(d_program_id, "CameraRight_worldspace");
+	d_cameraup_worldspace_id = glGetUniformLocation(d_program_id, "CameraUp_wordspace");
+	d_viewprojmatrix_id = glGetUniformLocation(d_program_id, "VP");
+
+	d_texture_id = glGetUniformLocation(d_program_id, "myTextureSampler");
+	return true;
+
+}
+
 void App::run()
 {
     while( running )

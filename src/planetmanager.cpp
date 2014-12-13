@@ -41,8 +41,8 @@ PlanetManager::~PlanetManager()
 void PlanetManager::initPlanets()
 {
 	Planet one_planet;
-	glm::vec2 d2Pos = glm::vec2(0, 0);
-	one_planet.pos = d2Pos;
+	glm::vec2 d2Pos = glm::vec2(5, 5);
+	one_planet.pos = glm::vec3(d2Pos.x, d2Pos.y, -70.0f);
 
 	one_planet.size = 10.0f;
 	d_planet_container.push_back(one_planet);
@@ -105,7 +105,7 @@ void PlanetManager::activateTexture()
 void PlanetManager::updatePlanets(const float& delta, glm::mat4& projection_matrix,
 								glm::mat4& view_matrix)
 {
-
+	//do nothing atm
 }
 
 void PlanetManager::drawPlanets()

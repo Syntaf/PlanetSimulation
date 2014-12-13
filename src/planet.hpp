@@ -4,8 +4,8 @@
 const float G = 6.6700E-11;
 
 struct Planet {
-	glm::vec2 pos, speed;
-	std::vector<glm::vec2> force;
+	glm::vec3 pos, speed;
+	std::vector<glm::vec3> force;
 	unsigned char r,g,b,a;
 	float size;
     float d_mass;
