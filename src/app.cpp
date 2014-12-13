@@ -9,6 +9,7 @@
 #include <glm/gtx/norm.hpp>
 #include "common/shader.hpp"
 #include "common/texture.hpp"
+#include "common/controls.hpp"
 #include "app.hpp"
 
 App::App(sf::VideoMode mode):
@@ -36,7 +37,8 @@ App::App()
 
 App::~App()
 {
-  //nothing atm
+	delete d_planet_manager;
+	glDeleteProgram(d_program_id);
 }
 
 bool App::initGL(const int& planet_count)
@@ -64,6 +66,14 @@ bool App::initGL(const int& planet_count)
 
 }
 
+bool App::initPlanets(const std::string& texture_path)
+{
+	if(!(d_planet_manager->loadTexture(texture_path.c_str())))
+		return false;
+	d_planet_manager->initPlanets();
+	return true;
+}
+
 void App::run()
 {
     while( running )
@@ -79,6 +89,25 @@ void App::run()
             glViewport(0,0,event.size.width,event.size.height);
         }
 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		computeMatricesFromInputs(d_main_window, delta);
+		glm::mat4 projection_matrix = getProjectionMatrix();
+		glm::mat4 view_matrix = getViewMatrix();
+		glm::mat4 view_projection_matrix = projection_matrix * view_matrix;
+
+		d_planet_manager->updatePlanets(delta, projection_matrix, view_matrix);
+
+		glUseProgram(d_program_id);
+
+		d_planet_manager->activateTexture();
+
+		glUniform1i(d_texture_id, 0);
+
+		glUniform3f(d_cameraright_worldspace_id, view_matrix[0][0], view_matrix[1][0], view_matrix[2][0]);
+		glUniform3f(d_cameraup_worldspace_id, view_matrix[0][1], view_matrix[1][1], view_matrix[2][1]);
+
+		d_planet_manager->drawPlanets();
         d_main_window.display();
     }
 }
