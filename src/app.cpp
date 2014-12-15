@@ -63,7 +63,6 @@ bool App::initGL(const int& planet_count)
 
 	d_texture_id = glGetUniformLocation(d_program_id, "myTextureSampler");
 	return true;
-
 }
 
 bool App::initPlanets(const std::string& texture_path)
@@ -98,6 +97,9 @@ void App::run()
 
 		d_planet_manager->updatePlanets(delta, projection_matrix, view_matrix);
 
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
 		glUseProgram(d_program_id);
 
 		d_planet_manager->activateTexture();
@@ -106,6 +108,8 @@ void App::run()
 
 		glUniform3f(d_cameraright_worldspace_id, view_matrix[0][0], view_matrix[1][0], view_matrix[2][0]);
 		glUniform3f(d_cameraup_worldspace_id, view_matrix[0][1], view_matrix[1][1], view_matrix[2][1]);
+
+		glUniformMatrix4fv(d_viewprojmatrix_id, 1, GL_FALSE, &view_projection_matrix[0][0]);
 
 		d_planet_manager->drawPlanets();
         d_main_window.display();

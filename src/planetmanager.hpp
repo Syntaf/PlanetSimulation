@@ -53,7 +53,7 @@ class PlanetManager{
 		static const GLfloat g_vertex_buffer_data[];
 
 		//custom 'constants'
-		int d_maxplanets
+		int d_maxplanets;
 };
 
 #endif

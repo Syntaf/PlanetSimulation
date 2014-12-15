@@ -40,18 +40,40 @@ PlanetManager::~PlanetManager()
 
 void PlanetManager::initPlanets()
 {
-	Planet one_planet;
-	glm::vec2 d2Pos = glm::vec2(5, 5);
-	one_planet.pos = glm::vec3(d2Pos.x, d2Pos.y, -70.0f);
+	int max_planets = (int)sqrt(d_maxplanets);
+    for(int i=0; i<max_planets; i++) {
+        for(int j=0; j<max_planets; j++) {
+			//create single particle and place it in allignment with other planets to form
+			//a square
+            Planet planet;
+			auto factor_x = (i - (float)max_planets / 2.0f) / (float)max_planets;
+			auto factor_y = (j - (float)max_planets / 2.0f) / (float)max_planets;
 
-	one_planet.size = 10.0f;
-	d_planet_container.push_back(one_planet);
+			//multiply by arbitrary constant
+			glm::vec2 particle_locale_delta = glm::vec2(30  * factor_x, 30 * factor_y);
+			glm::vec2 d2Pos = glm::vec2(0, 0);
+			d2Pos += particle_locale_delta;
+            planet.pos = glm::vec3(d2Pos.x,d2Pos.y,-70);
+
+            planet.cameradistance = -1.0f;
+
+            planet.r = 255;
+            planet.g = 50;
+            planet.b = 100;
+            planet.a = 255;
+
+            planet.size = 10.0f;
+            d_planet_container.push_back(planet);
+        }
+    }
 }
 
 bool PlanetManager::loadTexture(const std::string& filename)
 {
-	if(!(d_texture = loadDDS("textures/Particle.DDS")))
+	if(!(d_texture = loadDDS("textures/Planet.DDS"))) {
+		std::cout << "Unable to locate texture " << filename << std::endl;
 		return false;
+	}
 	return true;
 }
 
@@ -105,7 +127,13 @@ void PlanetManager::activateTexture()
 void PlanetManager::updatePlanets(const float& delta, glm::mat4& projection_matrix,
 								glm::mat4& view_matrix)
 {
-	//do nothing atm
+	GLsizei planet_count=0;
+	for(size_t i = 0; i < d_planet_container.size(); i++) {
+		Planet &p = d_planet_container[i];
+		p.pos = glm::vec3(15.0f,15.0f,0);
+		fillPlanetGLBuffers(int(i), planet_count);
+	}
+	updateGlBuffers();
 }
 
 void PlanetManager::drawPlanets()
