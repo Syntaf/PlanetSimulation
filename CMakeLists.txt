@@ -22,7 +22,7 @@ configure_file(
 option (USE_TGUI
 	"Use TGUI experimental implementation" ON)
 
-#include sources, headers and runtime dependencies
+#include all headers
 set(HEADERS
 	src/common/shader.hpp
 	src/common/texture.hpp
@@ -32,6 +32,7 @@ set(HEADERS
 	src/planetmanager.hpp
 )
 
+#include all sources
 set(SOURCES
 	src/main.cpp
 	src/app.cpp
@@ -41,6 +42,7 @@ set(SOURCES
 	src/common/controls.cpp
 )
 
+#these will be copied into the build directory
 set(RUNTIME_DEPENDENCIES
 	shaders/vertexshader.vert
 	shaders/fragmentshader.frag
