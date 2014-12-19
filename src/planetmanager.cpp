@@ -70,7 +70,7 @@ void PlanetManager::initPlanets()
 
 bool PlanetManager::loadTexture(const std::string& filename)
 {
-	if(!(d_texture = loadDDS("textures/Planet.dds"))) {
+	if(!(d_texture = Syn::loadDDS("textures/Planet.dds"))) {
 		std::cout << "Unable to locate texture " << filename << std::endl;
 		return false;
 	}

@@ -50,7 +50,7 @@ bool App::initGL(const int& planet_count)
 	d_planet_manager->genGLBuffers();
 	glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
 
-	d_program_id = LoadShaders("shaders/vertexshader.vert",
+	d_program_id = Syn::LoadShaders("shaders/vertexshader.vert",
 		"shaders/fragmentshader.frag");
 
 	//These will be the vectors and matrices used in the shaders
