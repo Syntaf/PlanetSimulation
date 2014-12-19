@@ -8,7 +8,6 @@
 class App{
   public:
     App(sf::VideoMode mode);
-    App();
     ~App();
 
 	bool initGL(const int& planet_count);
@@ -31,7 +30,7 @@ class App{
 	GLuint d_texture_id;
 
 
-    bool running;
+    static bool running;
 };
 
 #endif

@@ -12,24 +12,14 @@
 #include "common/controls.hpp"
 #include "app.hpp"
 
-App::App(sf::VideoMode mode):
-	running(true)
+bool App::running=true;
+
+App::App(sf::VideoMode mode)
 {
   d_main_window.create(mode,
     "Planet Simulator",
     sf::Style::Default,
     sf::ContextSettings(32, 8, 0, 3,3 )
-  );
-
-  d_main_window.setPosition(sf::Vector2i(500,50));
-}
-
-App::App()
-{
-  d_main_window.create(sf::VideoMode(800,600),
-    "Planet Simulator",
-    sf::Style::Default,
-    sf::ContextSettings(32, 8, 0, 3, 3)
   );
 
   d_main_window.setPosition(sf::Vector2i(500,50));
@@ -58,7 +48,7 @@ bool App::initGL(const int& planet_count)
 		"shaders/fragmentshader.frag");
 
 	d_cameraright_worldspace_id = glGetUniformLocation(d_program_id, "CameraRight_worldspace");
-	d_cameraup_worldspace_id = glGetUniformLocation(d_program_id, "CameraUp_wordspace");
+	d_cameraup_worldspace_id = glGetUniformLocation(d_program_id, "CameraUp_worldspace");
 	d_viewprojmatrix_id = glGetUniformLocation(d_program_id, "VP");
 
 	d_texture_id = glGetUniformLocation(d_program_id, "myTextureSampler");
@@ -97,7 +87,7 @@ void App::run()
 
 		d_planet_manager->updatePlanets(delta, projection_matrix, view_matrix);
 
-		glEnable(GL_BLEND);
+		glEnable(GL_BLEND); 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
 		glUseProgram(d_program_id);

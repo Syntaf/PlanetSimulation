@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 {
 	App program(sf::VideoMode(1000, 750));
 
-	if( (!program.initGL(10000)) || !(program.initPlanets("textures/Planet.dds")))
+	if( (!program.initGL(2)) || !(program.initPlanets("textures/Planet.dds")))
 		return -1;
 
 	program.run();

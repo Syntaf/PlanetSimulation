@@ -62,7 +62,7 @@ void PlanetManager::initPlanets()
             planet.b = 100;
             planet.a = 255;
 
-            planet.size = 10.0f;
+            planet.size = 1.0f;
             d_planet_container.push_back(planet);
         }
     }
@@ -70,7 +70,7 @@ void PlanetManager::initPlanets()
 
 bool PlanetManager::loadTexture(const std::string& filename)
 {
-	if(!(d_texture = loadDDS("textures/Planet.DDS"))) {
+	if(!(d_texture = loadDDS("textures/Planet.dds"))) {
 		std::cout << "Unable to locate texture " << filename << std::endl;
 		return false;
 	}
@@ -130,8 +130,9 @@ void PlanetManager::updatePlanets(const float& delta, glm::mat4& projection_matr
 	GLsizei planet_count=0;
 	for(size_t i = 0; i < d_planet_container.size(); i++) {
 		Planet &p = d_planet_container[i];
-		p.pos = glm::vec3(15.0f,15.0f,0);
+		p.pos = glm::vec3(0.0f,0.0f,0);
 		fillPlanetGLBuffers(int(i), planet_count);
+		planet_count++;
 	}
 	updateGlBuffers();
 }
@@ -173,7 +174,7 @@ void PlanetManager::drawPlanets()
 
 	glVertexAttribDivisor(0, 0);
 	glVertexAttribDivisor(1, 1);
-	glVertexAttribDivisor(2, 2);
+	glVertexAttribDivisor(2, 1);
 
 	glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, d_maxplanets);
 
