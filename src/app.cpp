@@ -44,7 +44,7 @@ bool App::initGL(const int& planet_count)
 	}
 
 	//initialize planet manager
-	d_planet_manager = new PlanetManager(&d_main_window, planet_count);
+	d_planet_manager = new PlanetManager(planet_count);
 
 	//generate OpenGL buffers for planets and clear screen
 	d_planet_manager->genGLBuffers();

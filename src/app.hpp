@@ -7,10 +7,10 @@
 
 class App{
   public:
-	//TODO? make constructor call initGL and initPlanets by itself
 	//The constructor of App does not actually do much other than
 	//	create the main window and set it's position to the middle
 	//  of the screen.
+	//  TODO? make constructor call initGL and initPlanets by itself
     App(sf::VideoMode mode);
     ~App();
 

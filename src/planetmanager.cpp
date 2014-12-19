@@ -17,20 +17,21 @@ const GLfloat PlanetManager::g_vertex_buffer_data[] = {
           0.5f,  0.5f, 0.0f,
 };
 
-PlanetManager::PlanetManager(sf::Window* parent_window, int maxplanets):
-	d_maxplanets(maxplanets)
+PlanetManager::PlanetManager(int maxplanets):
+	d_MAXPLANETS(maxplanets)
 {
-	d_parent_window = parent_window;
-	
-	g_planet_position_size_data = new GLfloat[d_maxplanets * 4];
-	g_planet_color_data = new GLubyte[d_maxplanets * 4];
+	// allocate resources needed for OpenGL buffers
+	g_planet_position_size_data = new GLfloat[d_MAXPLANETS * 4];
+	g_planet_color_data = new GLubyte[d_MAXPLANETS * 4];
 
+	//generate and bind vertex array
 	glGenVertexArrays(1, &d_vertex_array_id);
 	glBindVertexArray(d_vertex_array_id);
 }
 
 PlanetManager::~PlanetManager()
 {
+	//free dynamic and OpenGL memory
 	glDeleteBuffers(1, &d_planet_color_buffer);
 	glDeleteBuffers(1, &d_planet_position_buffer);
 	glDeleteBuffers(1, &d_billboard_vertex_buffer);
@@ -40,11 +41,10 @@ PlanetManager::~PlanetManager()
 
 void PlanetManager::initPlanets()
 {
-	int max_planets = (int)sqrt(d_maxplanets);
+	//create planets in square shape
+	int max_planets = (int)sqrt(d_MAXPLANETS);
     for(int i=0; i<max_planets; i++) {
         for(int j=0; j<max_planets; j++) {
-			//create single particle and place it in allignment with other planets to form
-			//a square
             Planet planet;
 			auto factor_x = (i - (float)max_planets / 2.0f) / (float)max_planets;
 			auto factor_y = (j - (float)max_planets / 2.0f) / (float)max_planets;
@@ -85,16 +85,18 @@ void PlanetManager::genGLBuffers()
 
 	glGenBuffers(1, &d_planet_position_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, d_planet_position_buffer);
-	glBufferData(GL_ARRAY_BUFFER, d_maxplanets * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, d_MAXPLANETS * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
 
 	glGenBuffers(1, &d_planet_color_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, d_planet_color_buffer);
-	glBufferData(GL_ARRAY_BUFFER, d_maxplanets * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, d_MAXPLANETS * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
 }
 
 void PlanetManager::fillPlanetGLBuffers(const int& index, const int& planet_count)
 {
+	//P is a shortcut so we don't have to type d_planet_container[index] a lot
 	Planet &p = d_planet_container[index];
+
 	//Fill GPU buffer
 	g_planet_position_size_data[4*planet_count+0] = p.pos.x;
 	g_planet_position_size_data[4*planet_count+1] = p.pos.y;
@@ -107,15 +109,15 @@ void PlanetManager::fillPlanetGLBuffers(const int& index, const int& planet_coun
 	g_planet_color_data[4*planet_count+3] = p.a;
 }
 
-void PlanetManager::updateGlBuffers()
+void PlanetManager::updateGLBuffers()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, d_planet_position_buffer);
-	glBufferData(GL_ARRAY_BUFFER, d_maxplanets * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, d_maxplanets * 4 * sizeof(GLfloat), g_planet_position_size_data);
+	glBufferData(GL_ARRAY_BUFFER, d_MAXPLANETS * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, d_MAXPLANETS * 4 * sizeof(GLfloat), g_planet_position_size_data);
 
 	glBindBuffer(GL_ARRAY_BUFFER, d_planet_color_buffer);
-	glBufferData(GL_ARRAY_BUFFER, d_maxplanets * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, d_maxplanets * 4 * sizeof(GLubyte), g_planet_color_data);
+	glBufferData(GL_ARRAY_BUFFER, d_MAXPLANETS * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, d_MAXPLANETS * 4 * sizeof(GLubyte), g_planet_color_data);
 }
 
 void PlanetManager::activateTexture()
@@ -127,6 +129,7 @@ void PlanetManager::activateTexture()
 void PlanetManager::updatePlanets(const float& delta, glm::mat4& projection_matrix,
 								glm::mat4& view_matrix)
 {
+	//TODO : write planet update function
 	GLsizei planet_count=0;
 	for(size_t i = 0; i < d_planet_container.size(); i++) {
 		Planet &p = d_planet_container[i];
@@ -134,7 +137,7 @@ void PlanetManager::updatePlanets(const float& delta, glm::mat4& projection_matr
 		fillPlanetGLBuffers(int(i), planet_count);
 		planet_count++;
 	}
-	updateGlBuffers();
+	updateGLBuffers();
 }
 
 void PlanetManager::drawPlanets()
@@ -176,7 +179,7 @@ void PlanetManager::drawPlanets()
 	glVertexAttribDivisor(1, 1);
 	glVertexAttribDivisor(2, 1);
 
-	glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, d_maxplanets);
+	glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, d_MAXPLANETS);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
