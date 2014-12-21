@@ -6,50 +6,39 @@
 const float G = (float)6.6700E-11;
 
 struct Planet {
-	glm::vec3 pos, speed;
-	std::vector<glm::vec3> force;
-	unsigned char r,g,b,a;
-	float size;
-	float mass;
-	float cameradistance;
+    // Add a specific force to our total force vector.
+    //	 This simply encapsulates .push_back(val) and
+    //	 makes the calling look more clear and centered
+    //	 around the math(and not what is going on)
+    void addForce(glm::vec3 const& m_force)
+    {
+        force.push_back(m_force);
+    }
 
-	void addForce(glm::vec3 const& m_force)
-	{
-		force.push_back(m_force);
-	}
+    // Return the total force summed up in the vector.
+    //	 The use of getting the total force would be to
+    //	 find the direction and end force of each planet
+    glm::vec3 getTotalForce() const
+    {
+        glm::vec3 total(0.0, 0.0, 0.0);
+        for(auto i = 0; i < force.size(); i++)
+            total += force[i];
+        return total;
+    }
 
-	glm::vec3 getTotalForce() const
-	{
-		glm::vec3 total(0.0, 0.0, 0.0);
-		for(auto i = 0; i < force.size(); i++)
-			total += force[i];
-		return total;
-	}
+    // Clear all elements inside the force vector, essentially
+    //	 stopping any planet currently in motion
+    void clearForce()
+    {
+        force.clear();
+    }
 
-	void clearForce()
-	{
-		force.clear();
-	}
-
-	/*
-    float gravitationalForce(Planet otherObject)
-	{
-		//F = G m1*m2 / r^2
-		// G = gravitational constant | G = 6.67300 x 10^-11
-		//m1 = mass 1(kg)
-		//m2 = mass 2(kg)
-		//r = distance between the centers of the masses
-
-		//find the distance between the x y and z pairs
-		float x_dist = x - otherObject.x;
-		float y_dist = y - otherObject.y;
-
-		//calculate distance between the two objects r^2 = x^2 + y^2
-		float r_Squared = ((x_dist * x_dist) + (y_dist * y_dist));
-
-		return G * (((mass) * otherObject.mass) / r_Squared); //returns force in newtons
-	}
-	*/
+    glm::vec3 pos, speed;               // position and speed of the planet
+    std::vector<glm::vec3> force;       // forces acting on planet
+    unsigned char r,g,b,a;              // color of our planet
+    float size;                         // size of our planet
+    float mass;                         // how heavy our planet is (proportional to size)
+    float cameradistance;               // distance planet is from camera
 };
 
 

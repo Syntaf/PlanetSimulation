@@ -134,6 +134,25 @@ void PlanetManager::updatePlanets(const float& delta, glm::mat4& projection_matr
 	for(size_t i = 0; i < d_planet_container.size(); i++) {
 		Planet &p = d_planet_container[i];
 		p.pos = glm::vec3(0.0f,0.0f,0);
+
+		
+		/*	this commented block is the universal gravitation equation, USE
+		//F = G m1*m2 / r^2
+		// G = gravitational constant | G = 6.67300 x 10^-11
+		//m1 = mass 1(kg)
+		//m2 = mass 2(kg)
+		//r = distance between the centers of the masses
+
+		//find the distance between the x y and z pairs
+		float x_dist = x - otherObject.x;
+		float y_dist = y - otherObject.y;
+
+		//calculate distance between the two objects r^2 = x^2 + y^2
+		float r_Squared = ((x_dist * x_dist) + (y_dist * y_dist));
+
+		return G * (((mass) * otherObject.mass) / r_Squared); //returns force in newtons
+		*/
+
 		fillPlanetGLBuffers(int(i), planet_count);
 		planet_count++;
 	}
