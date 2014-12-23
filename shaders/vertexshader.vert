@@ -6,7 +6,7 @@ layout(location = 2) in vec4 color; // Position of the center of the particule a
 
 // Output data ; will be interpolated for each fragment.
 out vec2 UV;
-out vec4 particlecolor;
+out vec4 planetcolor;
 
 // Values that stay constant for the whole mesh.
 uniform vec3 CameraRight_worldspace;
@@ -15,18 +15,18 @@ uniform mat4 VP; // Model-View-Projection matrix, but without the Model (the pos
 
 void main()
 {
-    float particleSize = xyzs.w; // because we encoded it this way.
-    vec3 particleCenter_wordspace = xyzs.xyz;
+    float planetSize = xyzs.w; // because we encoded it this way.
+    vec3 planetCenter_wordspace = xyzs.xyz;
     
     vec3 vertexPosition_worldspace = 
-        particleCenter_wordspace
-        + CameraRight_worldspace * squareVertices.x * particleSize
-        + CameraUp_worldspace * squareVertices.y * particleSize;
+        planetCenter_wordspace
+        + CameraRight_worldspace * squareVertices.x * planetSize
+        + CameraUp_worldspace * squareVertices.y * planetSize;
 
     // Output position of the vertex
     gl_Position = VP * vec4(vertexPosition_worldspace, 1.0f);
 
     // UV of the vertex. No special space for this one.
     UV = squareVertices.xy + vec2(0.5, 0.5);
-    particlecolor = color;
+    planetcolor = color;
 }
